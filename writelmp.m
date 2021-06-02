@@ -2,7 +2,7 @@ function writelmp(fname,data)
 
   fid = fopen(fname,"w");
   fprintf(fid,"LAMMPS data file Created by Octave\n\n");
-  
+
   #header
   fprintf(fid,"%8d atoms\n",data.atoms);
   fprintf(fid,"%8d bonds\n",data.bonds);
@@ -15,7 +15,7 @@ function writelmp(fname,data)
   fprintf(fid,"%8d angle types\n",data.angle_types);
   fprintf(fid,"%8d dihedral types\n",data.dihedral_types);
   fprintf(fid,"%8d improper types\n",data.improper_types);
-  fprintf(fid,"\n");  
+  fprintf(fid,"\n");
 
   #box
   fprintf(fid,"%12.6f%12.6f xlo xhi\n",data.xlo,data.xhi);
@@ -24,31 +24,55 @@ function writelmp(fname,data)
   if (isfield(data,'xy')&isfield(data,'xz')&isfield(data,'yz')),
     fprintf(fid,"%12.6f%12.6f%12.6f xy xz yz\n",data.xy,data.xz,data.yz);
   endif
-  
+
+  % #coefficients
+  % fprintf(fid,"\nMasses\n\n");
+  % fprintf(fid,"%8d%12.3f\n",data.Masses');
+  % fprintf(fid,"\nPair Coeffs\n\n");
+  % fprintf(fid,"%8d%12.4f%12.7f\n",data.PairCoeffs');
+  % if isfield(data,"BondCoeffs"),
+  %   fprintf(fid,"\nBond Coeffs\n\n");
+  %   fprintf(fid,"%8d%12.4f%12.4f\n",data.BondCoeffs');
+  % endif
+  % if isfield(data,"AngleCoeffs"),
+  %   fprintf(fid,"\nAngle Coeffs\n\n");
+  %   fprintf(fid,"%8d%12.4f%12.4f\n",data.AngleCoeffs');
+  % endif
+  % if isfield(data,"DihedralCoeffs"),
+  %   fprintf(fid,"\nDihedral Coeffs\n\n");
+  %   fmt = repmat("%12.4f",1,size(data.DihedralCoeffs,2)-1);
+  %   fprintf(fid,["%8d",fmt,"\n"],data.DihedralCoeffs');
+  % endif
+  % if isfield(data,"ImproperCoeffs"),
+  %   fprintf(fid,"\nImproper Coeffs\n\n");
+  %   fmt = repmat("%12.4f",1,size(data.ImproperCoeffs,2)-3);
+  %   fprintf(fid,["%8d",fmt,"%8d%8d\n"],data.ImproperCoeffs');
+  % endif
+
   #coefficients
   fprintf(fid,"\nMasses\n\n");
-  fprintf(fid,"%8d%12.3f\n",data.Masses');
+  fprintf(fid,"%8d%12.7f\n",data.Masses');
   fprintf(fid,"\nPair Coeffs\n\n");
-  fprintf(fid,"%8d%12.4f%12.7f\n",data.PairCoeffs');
+  fprintf(fid,"%8d%12.7f%12.7f\n",data.PairCoeffs');
   if isfield(data,"BondCoeffs"),
     fprintf(fid,"\nBond Coeffs\n\n");
-    fprintf(fid,"%8d%12.4f%12.4f\n",data.BondCoeffs');
+    fprintf(fid,"%8d%12.7f%12.7f\n",data.BondCoeffs');
   endif
   if isfield(data,"AngleCoeffs"),
     fprintf(fid,"\nAngle Coeffs\n\n");
-    fprintf(fid,"%8d%12.4f%12.4f\n",data.AngleCoeffs');
+    fprintf(fid,"%8d%12.7f%12.7f\n",data.AngleCoeffs');
   endif
   if isfield(data,"DihedralCoeffs"),
     fprintf(fid,"\nDihedral Coeffs\n\n");
-    fmt = repmat("%12.4f",1,size(data.DihedralCoeffs,2)-1);
+    fmt = repmat("%12.7f",1,size(data.DihedralCoeffs,2)-1);
     fprintf(fid,["%8d",fmt,"\n"],data.DihedralCoeffs');
   endif
   if isfield(data,"ImproperCoeffs"),
     fprintf(fid,"\nImproper Coeffs\n\n");
-    fmt = repmat("%12.4f",1,size(data.ImproperCoeffs,2)-3);
+    fmt = repmat("%12.7f",1,size(data.ImproperCoeffs,2)-3);
     fprintf(fid,["%8d",fmt,"%8d%8d\n"],data.ImproperCoeffs');
   endif
-  
+
   #topology
   fprintf(fid,"\nAtoms\n\n");
   if size(data.Atoms,2) == 7,
@@ -79,7 +103,7 @@ function writelmp(fname,data)
     fprintf(fid,"%8d%8d%8d%8d%8d%8d\n",data.Impropers');
   endif
   fprintf(fid,"\n");
-  
+
   fclose(fid);
 
 endfunction
